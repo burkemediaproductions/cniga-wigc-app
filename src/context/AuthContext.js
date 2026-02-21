@@ -7,24 +7,38 @@ export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
   const [booting, setBooting] = useState(true);
 
-  useEffect(() => {
-    let mounted = true;
+useEffect(() => {
+  let mounted = true;
 
-    supabase.auth.getSession().then(({ data }) => {
+  (async () => {
+    try {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) throw error;
       if (!mounted) return;
+
       setSession(data.session ?? null);
-      setBooting(false);
-    });
+    } catch (e) {
+      console.log("getSession error:", e?.message || e);
+      if (!mounted) return;
 
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession ?? null);
-    });
+      setSession(null);
+    } finally {
+      if (mounted) setBooting(false);
+    }
+  })();
 
-    return () => {
-      mounted = false;
-      sub?.subscription?.unsubscribe?.();
-    };
-  }, []);
+  const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
+    setSession(newSession ?? null);
+    // Safety: if auth event fires first, ensure booting is false
+    setBooting(false);
+  });
+
+  return () => {
+    mounted = false;
+    sub?.subscription?.unsubscribe?.();
+  };
+}, []);
+
 
   const value = useMemo(() => {
     return {

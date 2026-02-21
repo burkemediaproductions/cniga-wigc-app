@@ -2,29 +2,53 @@
   "expo": {
     "name": "CNIGA WIGC",
     "slug": "cniga-wigc-native",
+    "scheme": "cniga",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
+
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+
+    "assetBundlePatterns": ["**/*"],
+
     "ios": {
+      "bundleIdentifier": "com.wigc.ios",
       "supportsTablet": true
     },
+
     "android": {
+      "package": "com.wigc.android",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": ["android.permission.RECORD_AUDIO"]
     },
+
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow WIGC to access your photos so you can upload a profile picture.",
+          "cameraPermission": "Allow WIGC to use your camera so you can take a profile picture."
+        }
+      ]
+    ],
+    "extra": {
+      "SUPABASE_URL": "https://szeqfcnmlredutxjzvfq.supabase.co",
+      "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6ZXFmY25tbHJlZHV0eGp6dmZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0MDg1NTgsImV4cCI6MjA4MDk4NDU1OH0.3JyQZLprUZ9Gz11i8OwdXsJQmJcvDVTdqzDVfQwsYjE",
+      "eas": {
+        "projectId": "c513a62b-9d95-424d-8ff5-5334a077c989"
+      }
     }
   }
 }
